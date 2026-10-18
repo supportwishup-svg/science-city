@@ -22,13 +22,15 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
 
-    - name: Extract zip file
+    - name: Extract zip and fix permissions
       run: |
         find . -name "*.zip" -exec unzip -o {} \;
+        chmod -R ugo+rwX .
         ls -la
 
     - name: Build with Gradle
       run: |
+        chmod -R ugo+rwX .
         TARGET_DIR=$(dirname $(find . -name "settings.gradle" | head -n 1))
         echo "Building in directory: $TARGET_DIR"
         cd "$TARGET_DIR"
